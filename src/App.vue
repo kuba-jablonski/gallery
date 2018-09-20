@@ -1,28 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button @click="cameraScreen = true" class="action-btn">Open modal</button>
+    <camera-screen v-if="cameraScreen" :open="cameraScreen"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import CameraScreen from "@/components/CameraScreen";
 
 export default {
-  name: "app",
   components: {
-    HelloWorld
+    CameraScreen
+  },
+  data() {
+    return {
+      cameraScreen: false
+    };
   }
 };
 </script>
 
 <style lang="scss">
+@import "css/base";
+@import "css/typography";
+
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  position: relative;
 }
 </style>
