@@ -158,7 +158,7 @@ button {
 .modal {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   max-width: 50rem;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   // min-height: 100vh;
@@ -167,7 +167,7 @@ button {
   align-items: center;
   transform: translate(-50%, -50%);
   width: 100%;
-  // background-color: red;
+  background-color: #fff;
   & > * {
     margin-bottom: 3rem;
   }

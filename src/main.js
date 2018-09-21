@@ -1,10 +1,13 @@
 import Vue from "vue";
 import App from "./App.vue";
 import firebase from "firebase";
+import { VueMasonryPlugin } from "vue-masonry";
 import store from "./store";
 import "./registerServiceWorker";
 
 Vue.config.productionTip = false;
+
+Vue.use(VueMasonryPlugin);
 
 var config = {
   apiKey: "AIzaSyAcs817uj7aGl3XFZNipOJtuzdCt4VYqVs",

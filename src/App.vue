@@ -1,6 +1,9 @@
 <template>
-  <div id="app" @click="cameraScreen = false">
-    <img v-for="image in images" :src="image.image" :key="image._id" alt="">
+  <div v-masonry transition-duration="0.3s" item-selector=".grid-item" id="app" @click="cameraScreen = false">
+    <div v-masonry-tile class="grid-item" v-for="image in images" :key="image._id">
+      <img :src="image.image"  alt="">
+    </div>
+    
     <button @click.stop="cameraScreen = true" class="action-btn">
       <camera-icon class="action-btn__icon"/>
     </button>
@@ -40,28 +43,64 @@ export default {
 #app {
   position: relative;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 5rem;
+}
+
+$gutter: 0px;
+
+@function columnOneOf($numOfColumns) {
+  @return calc(
+    (100% - ((#{$numOfColumns} - 1) * #{$gutter})) / #{$numOfColumns}
+  );
+}
+
+.gutter-sizer {
+  width: $gutter;
+}
+
+.grid-item {
+  width: columnOneOf(5);
+
+  @media screen and (max-width: 1024px) {
+    width: columnOneOf(4);
+  }
+
+  @media screen and (max-width: 800px) {
+    width: columnOneOf(3);
+  }
+
+  @media screen and (max-width: 650px) {
+    width: columnOneOf(2);
+  }
+
+  @media screen and (max-width: 480px) {
+    width: columnOneOf(1);
+  }
+}
+
+.grid-item {
+  display: block;
+  margin-bottom: $gutter;
 }
 </style>
 
 <style lang="scss" scoped>
 img {
   width: 100%;
+  display: block;
 }
 
 .action-btn {
   // width: 50%;
+  box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   bottom: 5rem;
   right: 5rem;
   height: 8rem;
   width: 8rem;
-  background-color: #44c767;
+  background-color: rgba(#fff, 0.5);
   border-radius: 50%;
   border: none;
   display: inline-block;
@@ -85,7 +124,7 @@ img {
   &__icon {
     height: 4.5rem;
     width: 4.5rem;
-    fill: #fff;
+    fill: #000;
   }
 }
 </style>
