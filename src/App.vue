@@ -1,21 +1,34 @@
 <template>
-  <div id="app">
-    <button @click="cameraScreen = true" class="action-btn"></button>
+  <div id="app" @click="cameraScreen = false">
+    <img v-for="image in images" :src="image.image" :key="image._id" alt="">
+    <button @click.stop="cameraScreen = true" class="action-btn">
+      <camera-icon class="action-btn__icon"/>
+    </button>
     <camera-screen v-if="cameraScreen" :open="cameraScreen"/>
   </div>
 </template>
 
 <script>
 import CameraScreen from "@/components/CameraScreen";
+import CameraIcon from "@/assets/svg/camera.svg";
 
 export default {
   components: {
-    CameraScreen
+    CameraScreen,
+    CameraIcon
   },
   data() {
     return {
       cameraScreen: false
     };
+  },
+  computed: {
+    images() {
+      return this.$store.state.images;
+    }
+  },
+  mounted() {
+    this.$store.dispatch("fetchImages");
   }
 };
 </script>
@@ -27,12 +40,22 @@ export default {
 #app {
   position: relative;
   min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 5rem;
 }
 </style>
 
 <style lang="scss" scoped>
-button {
+img {
+  width: 100%;
+}
+
+.action-btn {
   // width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   bottom: 5rem;
   right: 5rem;
@@ -57,6 +80,12 @@ button {
   &:active {
     // position:relative;
     // top:1px;
+  }
+
+  &__icon {
+    height: 4.5rem;
+    width: 4.5rem;
+    fill: #fff;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div @click.stop class="modal">
     <video v-show="video" class="player" ref="player" autoplay></video>
     <img v-if="image" :src="image" alt="">
     <button v-if="!image" @click="takePicture" id="capture-button">Capture</button>
