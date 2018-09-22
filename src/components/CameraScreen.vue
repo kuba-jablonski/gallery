@@ -7,17 +7,21 @@
       <label for="upload" class="file-upload__label">Css only file upload button</label>
       <input @change="onFileChange($event.target.files[0])" id="upload" class="file-upload__input" type="file" name="file-upload">
     </div>
-    <button v-if="image" @click="onSave" id="capture-button">Save</button>
+    <!-- <button v-if="image" @click="onSave" id="capture-button">Save</button> -->
+    <upload-button v-if="image" @click="onSave"/>
     <button v-if="image" @click="reset" id="capture-button">Cancel</button>
   </div>
 </template>
 
 <script>
+import UploadButton from "@/components/UploadButton";
 import firebase from "firebase";
 import uuid from "uuid/v1";
 
 export default {
-  props: ["open"],
+  components: {
+    UploadButton
+  },
   data() {
     return {
       video: true,
