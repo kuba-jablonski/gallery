@@ -1,7 +1,7 @@
 <template>
   <div v-masonry transition-duration="0.3s" item-selector=".grid-item" id="app" @click="cameraScreen = false">
     <div v-masonry-tile class="grid-item" v-for="image in images" :key="image._id">
-      <img :src="image.image"  alt="">
+      <img class='grid-img' :src="image.image">
     </div>
     
     <button @click.stop="cameraScreen = true" class="action-btn">
@@ -44,7 +44,10 @@ export default {
   position: relative;
   min-height: 100vh;
 }
+</style>
 
+<style lang="scss" scoped>
+// GRID STYLES
 $gutter: 0px;
 
 @function columnOneOf($numOfColumns) {
@@ -81,16 +84,14 @@ $gutter: 0px;
   display: block;
   margin-bottom: $gutter;
 }
-</style>
 
-<style lang="scss" scoped>
-img {
+// OTHER STYLES
+.grid-img {
   width: 100%;
   display: block;
 }
 
 .action-btn {
-  // width: 50%;
   box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
   display: flex;
   justify-content: center;
@@ -107,18 +108,11 @@ img {
   cursor: pointer;
   color: #ffffff;
   font-family: Arial;
-  font-size: 17px;
-  // padding:14px 43px;
   text-decoration: none;
-  // text-shadow:0px 1px 0px #2f6627;
+  transition: background-color 0.3s;
 
   &:hover {
-    background-color: #5cbf2a;
-  }
-
-  &:active {
-    // position:relative;
-    // top:1px;
+    background-color: #fff;
   }
 
   &__icon {
