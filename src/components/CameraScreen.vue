@@ -7,7 +7,7 @@
       <label for="upload" class="file-upload__label">Upload file</label>
       <input @change="onFileChange($event.target.files[0])" id="upload" class="file-upload__input" type="file" name="file-upload">
     </div>
-    <base-button color="success" v-if="image" @click="onSave">Save</base-button>
+    <base-button :loading="loading" color="success" v-if="image" @click="onSave">Save</base-button>
     <base-button color="error" v-if="image" @click="reset">Cancel</base-button>
   </div>
 </template>
@@ -22,7 +22,8 @@ export default {
   data() {
     return {
       video: true,
-      image: null
+      image: null,
+      loading: false
     };
   },
   methods: {
@@ -55,8 +56,11 @@ export default {
       };
       reader.readAsDataURL(file);
     },
-    onSave() {
-      this.$store.dispatch("saveImage", this.image);
+    async onSave() {
+      this.loading = true;
+      await this.$store.dispatch("saveImage", this.image);
+      this.loading = false;
+      this.$emit("close");
     }
   },
   mounted() {

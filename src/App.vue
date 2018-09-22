@@ -7,7 +7,7 @@
     <button v-if="!cameraScreen" @click.stop="cameraScreen = true" class="action-btn">
       <camera-icon class="action-btn__icon"/>
     </button>
-    <camera-screen v-if="cameraScreen" :open="cameraScreen"/>
+    <camera-screen @close="cameraScreen = false" v-if="cameraScreen" :open="cameraScreen"/>
   </div>
 </template>
 
