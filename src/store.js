@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/storage";
 import uuid from "uuid/v1";
 
 Vue.use(Vuex);
