@@ -1,22 +1,19 @@
 <template>
   <div @click.stop class="modal">
     <video v-show="video" class="player" ref="player" autoplay></video>
-    <img v-if="image" :src="image" alt="">
-    <base-button color="success" v-if="!image" @click="takePicture" id="capture-button">Take picture</base-button>
+    <img class="preview" v-if="image" :src="image" alt="Image preview">
+    <base-button color="success" v-if="!image" @click="takePicture">Take picture</base-button>
     <div v-if="!image" class="file-upload">
       <label for="upload" class="file-upload__label">Upload file</label>
       <input @change="onFileChange($event.target.files[0])" id="upload" class="file-upload__input" type="file" name="file-upload">
     </div>
-    <base-button color="success" v-if="image" @click="onSave" id="capture-button">Save</base-button>
-    <!-- <upload-button v-if="image" @click="onSave"/> -->
-    <base-button color="error" v-if="image" @click="reset" id="capture-button">Cancel</base-button>
+    <base-button color="success" v-if="image" @click="onSave">Save</base-button>
+    <base-button color="error" v-if="image" @click="reset">Cancel</base-button>
   </div>
 </template>
 
 <script>
 import BaseButton from "@/components/BaseButton";
-import firebase from "firebase";
-import uuid from "uuid/v1";
 
 export default {
   components: {
@@ -48,50 +45,19 @@ export default {
       );
       this.video = false;
       this.image = canvas.toDataURL("image/png");
-      // this.convertCanvasToImage(canvas);
     },
     onFileChange(file) {
+      console.log("running");
       const reader = new FileReader();
 
       reader.onload = e => {
-        // this.$emit("onFileChange", {
-        //   filename: file.name,
-        //   fileSrc: e.target.result
-        // });
         this.video = false;
         this.image = e.target.result;
       };
       reader.readAsDataURL(file);
     },
-    async onSave() {
-      const storageRef = firebase
-        .storage()
-        .ref()
-        .child("images")
-        .child(uuid());
-      await storageRef.putString(this.image, "data_url");
-      const url = await storageRef.getDownloadURL();
-      console.log(url);
-
-      try {
-        const res = await fetch(`${process.env.VUE_APP_API_ROOT}/img`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ image: url })
-        });
-
-        // console.log(res)
-        const data = await res.json();
-        console.log(data);
-
-        // if (res.status < 200 || res.status >= 300) {
-        //   throw new Error(data.msg);
-        // }
-      } catch (e) {
-        console.log(e);
-      }
+    onSave() {
+      this.$store.dispatch("saveImage", this.image);
     }
   },
   mounted() {
@@ -129,35 +95,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-img {
-  width: 100%;
+.preview {
+  max-height: 40rem;
+  max-width: 100%;
   object-fit: cover;
   object-position: center;
 }
-
-// button {
-//   width: 50%;
-//   background-color: #44c767;
-//   border-radius: 28px;
-//   border: 1px solid #18ab29;
-//   display: inline-block;
-//   cursor: pointer;
-//   color: #ffffff;
-//   font-family: Arial;
-//   font-size: 17px;
-//   padding: 14px 43px;
-//   text-decoration: none;
-//   text-shadow: 0px 1px 0px #2f6627;
-
-//   &:hover {
-//     background-color: #5cbf2a;
-//   }
-
-//   &:active {
-//     position: relative;
-//     top: 1px;
-//   }
-// }
 
 .modal {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -165,7 +108,6 @@ img {
   position: fixed;
   top: 50%;
   left: 50%;
-  // min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,10 +122,6 @@ img {
     width: 100%;
     min-height: 100vh;
   }
-}
-
-.container {
-  position: relative;
 }
 
 .player {
