@@ -47,7 +47,6 @@ export default {
       this.image = canvas.toDataURL("image/png");
     },
     onFileChange(file) {
-      console.log("running");
       const reader = new FileReader();
 
       reader.onload = e => {
