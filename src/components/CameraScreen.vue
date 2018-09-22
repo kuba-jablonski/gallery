@@ -2,25 +2,25 @@
   <div @click.stop class="modal">
     <video v-show="video" class="player" ref="player" autoplay></video>
     <img v-if="image" :src="image" alt="">
-    <button v-if="!image" @click="takePicture" id="capture-button">Capture</button>
+    <base-button color="success" v-if="!image" @click="takePicture" id="capture-button">Take picture</base-button>
     <div v-if="!image" class="file-upload">
-      <label for="upload" class="file-upload__label">Css only file upload button</label>
+      <label for="upload" class="file-upload__label">Upload file</label>
       <input @change="onFileChange($event.target.files[0])" id="upload" class="file-upload__input" type="file" name="file-upload">
     </div>
-    <!-- <button v-if="image" @click="onSave" id="capture-button">Save</button> -->
-    <upload-button v-if="image" @click="onSave"/>
-    <button v-if="image" @click="reset" id="capture-button">Cancel</button>
+    <base-button color="success" v-if="image" @click="onSave" id="capture-button">Save</base-button>
+    <!-- <upload-button v-if="image" @click="onSave"/> -->
+    <base-button color="error" v-if="image" @click="reset" id="capture-button">Cancel</base-button>
   </div>
 </template>
 
 <script>
-import UploadButton from "@/components/UploadButton";
+import BaseButton from "@/components/BaseButton";
 import firebase from "firebase";
 import uuid from "uuid/v1";
 
 export default {
   components: {
-    UploadButton
+    BaseButton
   },
   data() {
     return {
@@ -135,29 +135,29 @@ img {
   object-position: center;
 }
 
-button {
-  width: 50%;
-  background-color: #44c767;
-  border-radius: 28px;
-  border: 1px solid #18ab29;
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 17px;
-  padding: 14px 43px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #2f6627;
+// button {
+//   width: 50%;
+//   background-color: #44c767;
+//   border-radius: 28px;
+//   border: 1px solid #18ab29;
+//   display: inline-block;
+//   cursor: pointer;
+//   color: #ffffff;
+//   font-family: Arial;
+//   font-size: 17px;
+//   padding: 14px 43px;
+//   text-decoration: none;
+//   text-shadow: 0px 1px 0px #2f6627;
 
-  &:hover {
-    background-color: #5cbf2a;
-  }
+//   &:hover {
+//     background-color: #5cbf2a;
+//   }
 
-  &:active {
-    position: relative;
-    top: 1px;
-  }
-}
+//   &:active {
+//     position: relative;
+//     top: 1px;
+//   }
+// }
 
 .modal {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -201,15 +201,25 @@ button {
 
 .file-upload__label {
   display: block;
-  padding: 1em 2em;
+  padding: 1rem 3rem;
+  position: relative;
+  font-family: inherit;
+  font-size: 1.6rem;
+  border: none;
+  outline: none;
   color: #fff;
-  background: #222;
-  border-radius: 0.4em;
-  transition: background 0.3s;
+  background-color: $color-success;
+  cursor: pointer;
+  display: flex;
+  min-width: 20rem;
+  height: 4.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
 
   &:hover {
-    cursor: pointer;
-    background: #000;
+    background-color: $color-success-light;
   }
 }
 
